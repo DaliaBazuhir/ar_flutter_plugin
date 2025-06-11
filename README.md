@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 # ar_flutter_plugin
 Lightweight Flutter plugin to present USDZ models in augmented reality on iPhones and iPads.
 =======
-# ar_plugin
-
-A Flutter plugin for displaying `.usdz` AR models using iOS RealityKit.
-
----
-
 ## Getting Started
 
 This plugin provides platform-specific implementation for iOS to display AR models in `.usdz` format.
