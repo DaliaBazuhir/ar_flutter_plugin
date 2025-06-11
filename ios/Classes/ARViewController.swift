@@ -1,4 +1,3 @@
-import Flutter
 import UIKit
 import ARKit
 import RealityKit
@@ -22,15 +21,41 @@ class ARViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupARView()
+        addCloseButton()
         loadModel()
     }
 
     private func setupARView() {
         arView = ARView(frame: view.bounds)
+        arView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(arView)
 
         // Enable gesture interactions
         arView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleRotation(_:))))
+    }
+
+    private func addCloseButton() {
+        let closeButton = UIButton(type: .system)
+        closeButton.setTitle("✕", for: .normal)
+        closeButton.setTitleColor(.white, for: .normal)
+        closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        closeButton.layer.cornerRadius = 20
+        closeButton.clipsToBounds = true
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.addTarget(self, action: #selector(closeARView), for: .touchUpInside)
+
+        view.addSubview(closeButton)
+
+        NSLayoutConstraint.activate([
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            closeButton.widthAnchor.constraint(equalToConstant: 40),
+            closeButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    @objc private func closeARView() {
+        self.dismiss(animated: true, completion: nil)
     }
 
     private func loadModel() {
@@ -68,50 +93,3 @@ class ARViewController: UIViewController {
         gesture.setTranslation(.zero, in: arView)
     }
 }
-
-/*
-import Flutter
-import UIKit
-import ARKit
-import RealityKit
-// ARViewController.swift
-class ARViewController: UIViewController {
-    var arView: ARView!
-    var modelName: String
-    var scale: Double
-
-    init(modelName: String, scale: Double) {
-        self.modelName = modelName
-        self.scale = scale
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupARView()
-        loadModel()
-    }
-
-    private func setupARView() {
-        arView = ARView(frame: view.bounds)
-        view.addSubview(arView)
-    }
-
-    private func loadModel() {
-        guard let modelEntity = try? ModelEntity.load(named: modelName) else {
-            print("Failed to load model: \(modelName)")
-            return
-        }
-
-        modelEntity.scale = SIMD3<Float>(Float(scale), Float(scale), Float(scale))
-
-        let anchor = AnchorEntity(plane: .horizontal)
-        anchor.addChild(modelEntity)
-        arView.scene.addAnchor(anchor)
-    }
-}
-*/

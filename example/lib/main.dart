@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     try {
       await _arPlugin.showArScreen(
         'Shell_Chair.usdz',
-        scale: 0.01,
+        scale: 0.001,
       );
     } catch (e) {
       print('Error launching AR screen: $e');
